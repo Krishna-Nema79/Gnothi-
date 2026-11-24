@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="description" content="Gnōthi: a private, on-device personal intelligence prototype for health and habits.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gnōthi prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app">
+ <aside class="rail">
+  <div class="brand"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 15c3-5 7-7.5 11-7.5S23 10 26 15c-3 5-7 7.5-11 7.5S7 20 4 15z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="15" cy="15" r="3.4" fill="#7FD1B4"/></svg><div>Gnōthi<small>know thyself</small></div></div>
+  <nav aria-label="Main">
+   <a href="#today" data-p="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>Today</a>
+   <a href="#why" data-p="why"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Why?</a>
+   <a href="#experiments" data-p="experiments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M7.5 15h9"/></svg>Experiments</a>
+   <a href="#checkin" data-p="checkin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="17" rx="2"/><path d="m8 13 3 3 5-6"/></svg>Check-in</a>
+   <a href="#vault" data-p="vault"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Vault</a>
+  </nav>
+  <div class="railnote"><b id="netCount">0</b>times your health data has left this device. Everything is computed in your browser.</div>
+ </aside>
+
+ <main>
+  <div class="banner" id="demoBanner" hidden><span>You're looking at 45 days of sample data. Import your own CSV in the Vault, or start a check-in.</span><a class="btn ghost" href="#vault">Use my own data</a></div>
+
+  <section class="page" id="p-today">
+   <div class="date" id="today-date"></div><h1 id="greet">Good evening</h1>
+   <p class="sub" id="todaySub"></p>
+   <div class="grid2">
+    <div class="panel insight"><div><div class="kicker">Last night</div><div class="big" id="insBig"></div></div><svg class="ring" id="ring" viewBox="0 0 150 150" role="img" aria-label="Last night's sleep against your normal"></svg><div class="act"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><span id="insAct"></span></div></div>
+    <div class="panel"><div class="kicker">Tonight's nudge</div><h2 id="nudgeTitle" style="margin-top:6px"></h2><p class="small" id="nudgeWhy" style="margin:0 0 16px"></p><div class="tl" aria-hidden="true"><div class="tlbar"><span class="tlwin"></span><i class="tln" style="left:43.75%"></i><i class="tls" style="left:62.5%"></i></div><div class="tlx"><span>9 pm</span><span>10 pm</span><span>11 pm</span><span>12 am</span><span>1 am</span></div><div class="tlk"><span><i class="tln"></i>Nudge 10:45</span><span><i class="tls"></i>Usual sleep 11:30</span></div></div><div class="row"><button class="btn" id="testNudge">Preview nudge</button><button class="btn ghost" id="notifBtn">Allow notifications</button></div></div>
+   </div>
+   <div class="panel">
+    <div class="row" style="justify-content:space-between"><h2 style="margin:0">Sleep, last 30 nights</h2><span class="small">Shaded band is your normal range (last 14 days)</span></div>
+    <div class="fig" id="sleepFig"><svg id="sleepSvg" role="img" aria-label="Sleep hours for the last 30 nights against your normal range"></svg><div class="tip" id="tip"></div></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>Sleep</span><span><i style="background:var(--coral)"></i>Over 45 min of phone use after 11 pm</span></div>
+    <div class="metrics" id="metrics"></div>
+   </div>
+  </section>
+
+  <section class="page" id="p-why">
+   <h1>What actually moves your numbers</h1>
+   <p class="sub">Gnōthi compares your days with each other, not with population averages. Each link shows how strong the evidence is, and anything uncertain can be tested as an experiment.</p>
+   <div class="seg" role="group" aria-label="Outcome"><button data-o="sleep" aria-pressed="true">Sleep</button><button data-o="energy" aria-pressed="false">Energy</button><button data-o="mood" aria-pressed="false">Mood</button></div>
+   <div class="panel" id="drivers"></div>
+   <p class="small" style="margin-top:12px">Method: days split at the median of each factor, difference in means, Welch's t-test. These are correlations. Use an experiment to check cause.</p>
+  </section>
+
+  <section class="page" id="p-experiments">
+   <h1>Test it on yourself</h1>
+   <p class="sub">Change one thing for 7 days. Gnōthi compares those days with the 14 days before, and tells you whether the change made a real difference.</p>
+   <div class="panel" id="activeExp" style="margin-bottom:20px"></div>
+   <div class="grid2">
+    <div class="panel"><h2>Start a new experiment</h2><div id="tpls"></div></div>
+    <div class="panel"><h2>Past results</h2><div id="history"></div></div>
+   </div>
+  </section>
+
+  <section class="page" id="p-checkin">
+   <h1>Today's check-in</h1>
+   <p class="sub">Takes about ten seconds. Sleep, steps and heart rate would come from Health Connect in the Android app. Here they're pre-filled with simulated readings you can edit.</p>
+   <form class="panel check" id="checkForm">
+    <div><label for="f-sleep">Sleep last night <span class="hint">(hours)</span></label><input id="f-sleep" type="number" step="0.1" min="0" max="14" required></div>
+    <div><label for="f-steps">Steps today</label><input id="f-steps" type="number" step="1" min="0" max="80000" required></div>
+    <div><label for="f-rhr">Resting heart rate <span class="hint">(bpm)</span></label><input id="f-rhr" type="number" step="1" min="30" max="140" required></div>
+    <div><label for="f-late">Phone use after 11 pm <span class="hint">(minutes)</span></label><input id="f-late" type="number" step="1" min="0" max="600" required></div>
+    <div><label for="f-caf">Coffee or tea after 3 pm <span class="hint">(cups)</span></label><input id="f-caf" type="number" step="1" min="0" max="10" required></div>
+    <div id="adhWrap" hidden><label>Did you stick to your experiment today?</label><div class="scale" id="adh"><button type="button" data-v="1">Yes</button><button type="button" data-v="0">No</button></div></div>
+    <div class="full"><label>Mood</label><div class="scale faces" id="mood"></div></div>
+    <div class="full"><label>Energy</label><div class="scale faces" id="energy"></div></div>
+    <div class="full row"><button class="btn primary" type="submit">Save check-in</button><span class="small" id="checkNote"></span></div>
+   </form>
+  </section>
+
+  <section class="page vault" id="p-vault">
+   <h1>Your data, on your device</h1>
+   <p class="sub">Everything Gnōthi knows about you is listed here. It is stored only in this browser. There is no account and no server.</p>
+   <div class="panel" style="margin-bottom:20px">
+    <dl><div><dt>Days recorded</dt><dd id="vDays"></dd></div><div><dt>Stored size</dt><dd id="vSize"></dd></div><div><dt>Uploaded anywhere</dt><dd>Never</dd></div></dl>
+    <div class="row">
+     <button class="btn primary" id="expCsv">Download CSV</button>
+     <button class="btn" id="copyCsv">Copy CSV</button>
+     <label class="btn" style="margin:0" for="impFile">Import CSV</label><input id="impFile" type="file" accept=".csv,text/csv" hidden>
+     <button class="btn ghost" id="resetDemo">Load sample data</button>
+     <button class="btn coral" id="wipe">Delete everything</button>
+    </div>
+    <p class="small" style="margin:14px 0 0">CSV columns: date, sleep, steps, rhr, late, caffeine, mood, energy. Export from any band app, rename the columns and import.</p>
+   </div>
+   <div class="panel"><h2>Latest 14 days</h2><div class="scroll"><table id="vTable"></table></div></div>
+  </section>
+ </main>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+<dialog id="confirmDlg"><h2>Delete everything?</h2><p class="small" style="font-size:15px">This removes every day, check-in and experiment from this browser. It can't be undone.</p><div class="row" style="justify-content:flex-end"><button class="btn" id="dlgNo">Keep my data</button><button class="btn coral" id="dlgYes">Delete everything</button></div></dialog>
+
+<script src="js/app.js"></script>
+</body>
+</html>
